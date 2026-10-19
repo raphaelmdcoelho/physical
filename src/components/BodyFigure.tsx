@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { MEASURE_LABELS, type Gender, type MeasureKey, type MonthEntry } from '../lib/types';
 
 type Side = 'left' | 'right';
@@ -11,8 +10,8 @@ interface Spot {
   side: Side;
 }
 
-// Front view: the person's right side is on the viewer's left.
-const FRONT: Spot[] = [
+// Front view: the person's right side is on the viewer's left. Positions are % of the figure box.
+const FEMALE_SPOTS: Spot[] = [
   { key: 'neck', x: 49, y: 15, side: 'left' },
   { key: 'rShoulder', x: 27, y: 18, side: 'left' },
   { key: 'rArm', x: 22, y: 27, side: 'left' },
@@ -29,22 +28,28 @@ const FRONT: Spot[] = [
   { key: 'lCalf', x: 60, y: 80, side: 'right' },
 ];
 
-// Back view mirrors left/right; only measures visible from behind get a dot.
-const BACK: Spot[] = [
-  { key: 'neck', x: 50, y: 14, side: 'left' },
-  { key: 'lShoulder', x: 30, y: 18, side: 'left' },
-  { key: 'lArm', x: 21, y: 26, side: 'left' },
-  { key: 'waist', x: 50, y: 37, side: 'left' },
-  { key: 'lForearm', x: 14, y: 43, side: 'left' },
-  { key: 'lThigh', x: 33, y: 62, side: 'left' },
-  { key: 'lCalf', x: 34, y: 80, side: 'left' },
-  { key: 'rShoulder', x: 70, y: 18, side: 'right' },
-  { key: 'rArm', x: 79, y: 26, side: 'right' },
-  { key: 'rForearm', x: 86, y: 43, side: 'right' },
-  { key: 'hips', x: 52, y: 46, side: 'right' },
-  { key: 'rThigh', x: 66, y: 62, side: 'right' },
-  { key: 'rCalf', x: 66, y: 80, side: 'right' },
+const MALE_SPOTS: Spot[] = [
+  { key: 'neck', x: 50, y: 20, side: 'left' },
+  { key: 'rShoulder', x: 32, y: 26, side: 'left' },
+  { key: 'rArm', x: 26, y: 36, side: 'left' },
+  { key: 'waist', x: 49, y: 39, side: 'left' },
+  { key: 'rForearm', x: 22, y: 45, side: 'left' },
+  { key: 'hips', x: 47, y: 49, side: 'left' },
+  { key: 'rThigh', x: 39, y: 62, side: 'left' },
+  { key: 'rCalf', x: 38, y: 77, side: 'left' },
+  { key: 'lShoulder', x: 68, y: 26, side: 'right' },
+  { key: 'chest', x: 58, y: 29, side: 'right' },
+  { key: 'lArm', x: 74, y: 36, side: 'right' },
+  { key: 'lForearm', x: 79, y: 45, side: 'right' },
+  { key: 'lThigh', x: 61, y: 62, side: 'right' },
+  { key: 'lCalf', x: 62, y: 77, side: 'right' },
 ];
+
+// The figure box follows each artwork's aspect ratio so the dots stay on the body.
+const LAYOUT = {
+  male: { spots: MALE_SPOTS, left: 24, width: 52, aspect: '100 / 78' },
+  female: { spots: FEMALE_SPOTS, left: 28, width: 44, aspect: '100 / 107' },
+} as const;
 
 const base = import.meta.env.BASE_URL;
 
@@ -81,8 +86,7 @@ interface Props {
 }
 
 export default function BodyFigure({ gender, entry, onEdit }: Props) {
-  const [view, setView] = useState<'front' | 'back'>('front');
-  const spots = view === 'front' ? FRONT : BACK;
+  const { spots, left, width, aspect } = LAYOUT[gender];
   const columns: Record<Side, Spot[]> = {
     left: spots.filter((s) => s.side === 'left'),
     right: spots.filter((s) => s.side === 'right'),
@@ -91,18 +95,10 @@ export default function BodyFigure({ gender, entry, onEdit }: Props) {
 
   return (
     <div className="figure-wrap">
-      <div className="seg" role="tablist" aria-label="Body view">
-        {(['front', 'back'] as const).map((v) => (
-          <button key={v} role="tab" aria-selected={view === v} className={view === v ? 'on' : ''} onClick={() => setView(v)}>
-            {v === 'front' ? 'Front' : 'Back'}
-          </button>
-        ))}
-      </div>
-
-      <div className="stage">
-        <div className="figure">
+      <div className="stage" style={{ aspectRatio: aspect }}>
+        <div className="figure" style={{ left: `${left}%`, width: `${width}%` }}>
           {gender === 'male' ? (
-            <img className="figure-img" src={`${base}body/male-${view}.png`} alt={`Male muscle map, ${view}`} />
+            <img className="figure-img" src={`${base}body/male-body.png`} alt="Male muscle map" />
           ) : (
             <FemaleFrame />
           )}
@@ -115,8 +111,8 @@ export default function BodyFigure({ gender, entry, onEdit }: Props) {
           {(['left', 'right'] as const).flatMap((side) =>
             columns[side].map((s, i) => {
               const ly = slotY(i, columns[side].length);
-              const figX = 28 + (s.x / 100) * 44; // figure occupies the middle 44% of the stage
-              const edge = side === 'left' ? 24 : 76;
+              const figX = left + (s.x / 100) * width;
+              const edge = side === 'left' ? left : left + width;
               return (
                 <polyline
                   key={s.key}
