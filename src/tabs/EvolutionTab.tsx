@@ -34,7 +34,7 @@ export default function EvolutionTab({ year, months }: Props) {
         ))}
       </div>
 
-      <div className="card chart">
+      <div className="gr-card pad chart">
         <h3>Muscle growth by month (cm)</h3>
         {hasData ? (
           <ResponsiveContainer width="100%" height={320}>
@@ -64,7 +64,7 @@ export default function EvolutionTab({ year, months }: Props) {
       </div>
 
       {hasWeight && (
-        <div className="card chart">
+        <div className="gr-card pad chart">
           <h3>Weight (kg)</h3>
           <ResponsiveContainer width="100%" height={220}>
             <LineChart data={weightRows} margin={{ top: 8, right: 12, left: -16, bottom: 0 }}>
