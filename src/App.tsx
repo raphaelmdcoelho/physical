@@ -9,9 +9,9 @@ import EvolutionTab from './tabs/EvolutionTab';
 import PressureTab from './tabs/PressureTab';
 
 const TABS = [
-  { id: 'body', label: 'Body', icon: '🏋️' },
-  { id: 'evolution', label: 'Evolution', icon: '📈' },
-  { id: 'pressure', label: 'Pressure', icon: '❤️' },
+  { id: 'body', label: 'Body' },
+  { id: 'evolution', label: 'Evolution' },
+  { id: 'pressure', label: 'Pressure' },
 ] as const;
 type TabId = (typeof TABS)[number]['id'];
 
@@ -29,7 +29,7 @@ function Shell({ user, onUser, onLogout }: { user: User; onUser: (u: User) => vo
         <nav className="tabs" aria-label="Sections">
           {TABS.map((t) => (
             <button key={t.id} className={tab === t.id ? 'on' : ''} aria-current={tab === t.id ? 'page' : undefined} onClick={() => setTab(t.id)}>
-              <span aria-hidden="true">{t.icon}</span> {t.label}
+              {t.label}
             </button>
           ))}
         </nav>
