@@ -34,11 +34,11 @@ function Shell({ user, onUser, onLogout }: { user: User; onUser: (u: User) => vo
           ))}
         </nav>
         <div className="user">
-          <select value={user.gender} onChange={(e) => changeGender(e.target.value as Gender)} aria-label="Body frame gender" title="Body frame">
+          <select className="select-control" value={user.gender} onChange={(e) => changeGender(e.target.value as Gender)} aria-label="Body frame gender" title="Body frame">
             <option value="male">♂ Male</option>
             <option value="female">♀ Female</option>
           </select>
-          <button className="btn ghost" onClick={onLogout} title={user.email}>
+          <button className="gr-button" data-variant="secondary" onClick={onLogout} title={user.email}>
             Log out
           </button>
         </div>

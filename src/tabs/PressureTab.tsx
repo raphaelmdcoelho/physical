@@ -53,41 +53,41 @@ export default function PressureTab({ readings, onAdd, onRemove }: Props) {
     <section>
       <h2 className="title">Blood pressure by day</h2>
 
-      <form className="card press-form" onSubmit={submit}>
-        <label className="field">
-          <span>Date</span>
-          <input type="date" value={date} max={todayISO()} onChange={(e) => setDate(e.target.value)} required />
-        </label>
-        <label className="field">
-          <span>Time</span>
-          <input type="time" value={time} onChange={(e) => setTime(e.target.value)} required />
-        </label>
-        <label className="field">
-          <span>Systolic</span>
+      <form className="gr-card pad press-form" onSubmit={submit}>
+        <div className="gr-field">
+          <label className="gr-field__label" htmlFor="pr-date">Date</label>
+          <input id="pr-date" className="gr-text-field" type="date" value={date} max={todayISO()} onChange={(e) => setDate(e.target.value)} required />
+        </div>
+        <div className="gr-field">
+          <label className="gr-field__label" htmlFor="pr-time">Time</label>
+          <input id="pr-time" className="gr-text-field" type="time" value={time} onChange={(e) => setTime(e.target.value)} required />
+        </div>
+        <div className="gr-field">
+          <label className="gr-field__label" htmlFor="pr-sys">Systolic</label>
           <div className="input-unit">
-            <input inputMode="numeric" value={sys} onChange={(e) => setSys(e.target.value)} placeholder="120" required />
+            <input id="pr-sys" className="gr-text-field" inputMode="numeric" value={sys} onChange={(e) => setSys(e.target.value)} placeholder="120" required />
             <em>mmHg</em>
           </div>
-        </label>
-        <label className="field">
-          <span>Diastolic</span>
+        </div>
+        <div className="gr-field">
+          <label className="gr-field__label" htmlFor="pr-dia">Diastolic</label>
           <div className="input-unit">
-            <input inputMode="numeric" value={dia} onChange={(e) => setDia(e.target.value)} placeholder="80" required />
+            <input id="pr-dia" className="gr-text-field" inputMode="numeric" value={dia} onChange={(e) => setDia(e.target.value)} placeholder="80" required />
             <em>mmHg</em>
           </div>
-        </label>
-        <label className="field">
-          <span>Pulse (optional)</span>
+        </div>
+        <div className="gr-field">
+          <label className="gr-field__label" htmlFor="pr-pulse">Pulse (optional)</label>
           <div className="input-unit">
-            <input inputMode="numeric" value={pulse} onChange={(e) => setPulse(e.target.value)} placeholder="70" />
+            <input id="pr-pulse" className="gr-text-field" inputMode="numeric" value={pulse} onChange={(e) => setPulse(e.target.value)} placeholder="70" />
             <em>bpm</em>
           </div>
-        </label>
-        <button className="btn primary">Add reading</button>
-        {error && <p className="error full">{error}</p>}
+        </div>
+        <button className="gr-button">Add reading</button>
+        {error && <p className="error full" role="alert">{error}</p>}
       </form>
 
-      <div className="card chart">
+      <div className="gr-card pad chart">
         <h3>Daily average · last 30 days</h3>
         {daily.length > 0 ? (
           <ResponsiveContainer width="100%" height={300}>
@@ -108,7 +108,7 @@ export default function PressureTab({ readings, onAdd, onRemove }: Props) {
       </div>
 
       {sorted.length > 0 && (
-        <div className="card">
+        <div className="gr-card pad">
           <h3>History</h3>
           <ul className="history">
             {sorted.map((r) => {
@@ -128,7 +128,7 @@ export default function PressureTab({ readings, onAdd, onRemove }: Props) {
                     </div>
                   </div>
                   <span className={`pill ${c.tone}`}>{c.label}</span>
-                  <button className="icon-btn" onClick={() => onRemove(r.id)} aria-label="Delete reading">
+                  <button className="gr-button" data-variant="secondary" onClick={() => onRemove(r.id)} aria-label="Delete reading">
                     ✕
                   </button>
                 </li>

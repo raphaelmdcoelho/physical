@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react';
+import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { MEASURES, MEASURE_LABELS, type MonthEntry } from '../lib/types';
 import { MONTH_NAMES } from '../lib/dates';
 
@@ -19,6 +19,10 @@ export default function MeasureForm({ year, month, entry, onSave, onClose }: Pro
     bodyFat: entry?.bodyFat?.toString() ?? '',
     ...Object.fromEntries(MEASURES.map((k) => [k, entry?.measures[k]?.toString() ?? ''])),
   }));
+  const dialog = useRef<HTMLDialogElement>(null);
+  useEffect(() => {
+    dialog.current?.showModal();
+  }, []);
   const set = (k: string) => (e: { target: { value: string } }) => setVals((v) => ({ ...v, [k]: e.target.value }));
 
   const submit = (e: FormEvent) => {
@@ -37,41 +41,40 @@ export default function MeasureForm({ year, month, entry, onSave, onClose }: Pro
   };
 
   const field = (k: string, label: string, unit: string) => (
-    <label className="field" key={k}>
-      <span>{label}</span>
+    <div className="gr-field" key={k}>
+      <label className="gr-field__label" htmlFor={`m-${k}`}>{label}</label>
       <div className="input-unit">
-        <input inputMode="decimal" pattern="[0-9]*[.,]?[0-9]*" value={vals[k]} onChange={set(k)} placeholder="—" />
+        <input id={`m-${k}`} className="gr-text-field" inputMode="decimal" pattern="[0-9]*[.,]?[0-9]*" value={vals[k]} onChange={set(k)} placeholder="—" />
         <em>{unit}</em>
       </div>
-    </label>
+    </div>
   );
 
   return (
-    <div className="modal-backdrop" onMouseDown={(e) => e.target === e.currentTarget && onClose()}>
-      <form className="modal" onSubmit={submit} role="dialog" aria-modal="true" aria-label="Update body info">
-        <header>
-          <h2>
+    <dialog ref={dialog} className="gr-dialog" data-size="lg" aria-labelledby="measure-title" onClose={onClose}>
+      <form onSubmit={submit}>
+        <div className="gr-dialog__header">
+          <h2 className="gr-dialog__title" id="measure-title">
             {MONTH_NAMES[month]} {year}
           </h2>
-          <button type="button" className="icon-btn" onClick={onClose} aria-label="Close">
-            ✕
-          </button>
-        </header>
-        <h3>Body</h3>
-        <div className="grid">
-          {field('weight', 'Weight', 'kg')}
-          {field('height', 'Height', 'cm')}
-          {field('bodyFat', 'Body fat', '%')}
         </div>
-        <h3>Muscle measures</h3>
-        <div className="grid">{MEASURES.map((k) => field(k, MEASURE_LABELS[k], 'cm'))}</div>
-        <footer>
-          <button type="button" className="btn ghost" onClick={onClose}>
+        <div className="gr-dialog__body">
+          <h3>Body</h3>
+          <div className="grid">
+            {field('weight', 'Weight', 'kg')}
+            {field('height', 'Height', 'cm')}
+            {field('bodyFat', 'Body fat', '%')}
+          </div>
+          <h3>Muscle measures</h3>
+          <div className="grid">{MEASURES.map((k) => field(k, MEASURE_LABELS[k], 'cm'))}</div>
+        </div>
+        <div className="gr-dialog__footer">
+          <button type="button" className="gr-button" data-variant="secondary" onClick={() => dialog.current?.close()}>
             Cancel
           </button>
-          <button className="btn primary">Save</button>
-        </footer>
+          <button className="gr-button">Save</button>
+        </div>
       </form>
-    </div>
+    </dialog>
   );
 }

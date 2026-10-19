@@ -32,7 +32,7 @@ export default function AuthScreen({ onAuth }: { onAuth: (u: User) => void }) {
 
   return (
     <main className="auth">
-      <form className="card auth-card" onSubmit={submit}>
+      <form className="gr-card auth-card" data-variant="elevated" onSubmit={submit}>
         <Logo big />
         <p className="muted center">Track your muscles, body and blood pressure.</p>
 
@@ -47,33 +47,35 @@ export default function AuthScreen({ onAuth }: { onAuth: (u: User) => void }) {
 
         {mode === 'signup' && (
           <>
-            <label className="field">
-              <span>Name</span>
-              <input value={name} onChange={(e) => setName(e.target.value)} autoComplete="name" required />
-            </label>
-            <div className="field">
-              <span>Gender</span>
+            <div className="gr-field">
+              <label className="gr-field__label" htmlFor="auth-name">Name</label>
+              <input id="auth-name" className="gr-text-field" value={name} onChange={(e) => setName(e.target.value)} autoComplete="name" required />
+            </div>
+            <fieldset className="gr-field-group">
+              <legend className="gr-field-group__legend">Gender</legend>
               <div className="gender">
                 {(['male', 'female'] as const).map((g) => (
-                  <button key={g} type="button" className={gender === g ? 'on' : ''} aria-pressed={gender === g} onClick={() => setGender(g)}>
+                  <button key={g} type="button" className="gr-button" data-variant={gender === g ? 'primary' : 'secondary'} aria-pressed={gender === g} onClick={() => setGender(g)}>
                     {g === 'male' ? '♂ Male' : '♀ Female'}
                   </button>
                 ))}
               </div>
+            </fieldset>
+            <div className="gr-field">
+              <label className="gr-field__label" htmlFor="auth-birth">Birth date</label>
+              <input id="auth-birth" className="gr-text-field" type="date" value={birthdate} onChange={(e) => setBirthdate(e.target.value)} required />
             </div>
-            <label className="field">
-              <span>Birth date</span>
-              <input type="date" value={birthdate} onChange={(e) => setBirthdate(e.target.value)} required />
-            </label>
           </>
         )}
-        <label className="field">
-          <span>Email</span>
-          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="email" required />
-        </label>
-        <label className="field">
-          <span>Password</span>
+        <div className="gr-field">
+          <label className="gr-field__label" htmlFor="auth-email">Email</label>
+          <input id="auth-email" className="gr-text-field" type="email" value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="email" required />
+        </div>
+        <div className="gr-field">
+          <label className="gr-field__label" htmlFor="auth-password">Password</label>
           <input
+            id="auth-password"
+            className="gr-text-field"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -81,9 +83,9 @@ export default function AuthScreen({ onAuth }: { onAuth: (u: User) => void }) {
             minLength={mode === 'signup' ? 6 : undefined}
             required
           />
-        </label>
-        {error && <p className="error">{error}</p>}
-        <button className="btn primary" disabled={busy}>
+        </div>
+        {error && <p className="error" role="alert">{error}</p>}
+        <button className="gr-button" disabled={busy}>
           {busy ? 'Please wait…' : mode === 'login' ? 'Log in' : 'Create account'}
         </button>
         <p className="muted small center">Your data is stored only in this browser.</p>

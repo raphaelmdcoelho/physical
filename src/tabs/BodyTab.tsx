@@ -22,7 +22,7 @@ export default function BodyTab({ user, year, months, onSave }: Props) {
     <section>
       <div className="toolbar">
         <div className="select">
-          <select value={month} onChange={(e) => setMonth(Number(e.target.value))} aria-label="Month">
+          <select className="select-control" value={month} onChange={(e) => setMonth(Number(e.target.value))} aria-label="Month">
             {MONTH_NAMES.map((name, i) => (
               <option key={name} value={i}>
                 {name} {year}
@@ -30,17 +30,21 @@ export default function BodyTab({ user, year, months, onSave }: Props) {
             ))}
           </select>
         </div>
-        <button className="icon-btn square" onClick={() => setEditing(true)} aria-label="Update muscle values" title="Update muscle values">
+        <button className="gr-button" data-variant="secondary" onClick={() => setEditing(true)} aria-label="Update muscle values" title="Update muscle values">
           ✎
         </button>
       </div>
 
-      <div className="card">
-        <BodyFigure gender={user.gender} entry={entry} onEdit={() => setEditing(true)} />
+      <div className="gr-card">
+        <div className="gr-card__body">
+          <BodyFigure gender={user.gender} entry={entry} onEdit={() => setEditing(true)} />
+        </div>
       </div>
 
-      <div className="card">
-        <Stats user={user} entry={entry} />
+      <div className="gr-card">
+        <div className="gr-card__body">
+          <Stats user={user} entry={entry} />
+        </div>
       </div>
 
       {editing && (
