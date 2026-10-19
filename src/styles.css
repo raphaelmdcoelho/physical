@@ -140,3 +140,7 @@ h3 { font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; color: 
 .gr-card { margin-bottom: 16px; }
 .pad { padding: var(--gr-space-4); }
 .stat { background: var(--surface-2); }
+
+.measure-rows { display: grid; gap: 12px; margin-top: 8px; }
+.measure-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.measure-row[data-single='true'] { grid-template-columns: minmax(0, 1fr); width: calc(50% - 6px); justify-self: center; }
