@@ -9,9 +9,6 @@ export interface User {
 }
 
 export const MEASURES = [
-  'neck',
-  'rShoulder',
-  'lShoulder',
   'chest',
   'waist',
   'hips',
@@ -27,9 +24,6 @@ export const MEASURES = [
 export type MeasureKey = (typeof MEASURES)[number];
 
 export const MEASURE_LABELS: Record<MeasureKey, string> = {
-  neck: 'Neck',
-  rShoulder: 'R shoulder',
-  lShoulder: 'L shoulder',
   chest: 'Chest',
   waist: 'Waist',
   hips: 'Hips',

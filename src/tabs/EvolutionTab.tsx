@@ -11,7 +11,7 @@ interface Props {
 }
 
 export default function EvolutionTab({ year, months }: Props) {
-  const [selected, setSelected] = useState<MeasureKey[]>(['lShoulder', 'chest']);
+  const [selected, setSelected] = useState<MeasureKey[]>(['chest', 'waist']);
   const toggle = (k: MeasureKey) => setSelected((s) => (s.includes(k) ? s.filter((x) => x !== k) : [...s, k]));
 
   const rows: Record<string, string | number | null>[] = MONTH_SHORT.map((name, i) => {

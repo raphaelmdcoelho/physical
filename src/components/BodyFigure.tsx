@@ -12,15 +12,12 @@ interface Spot {
 
 // Front view: the person's right side is on the viewer's left. Positions are % of the figure box.
 const FEMALE_SPOTS: Spot[] = [
-  { key: 'neck', x: 49, y: 15, side: 'left' },
-  { key: 'rShoulder', x: 27, y: 18, side: 'left' },
   { key: 'rArm', x: 22, y: 27, side: 'left' },
   { key: 'waist', x: 46, y: 36, side: 'left' },
   { key: 'rForearm', x: 14, y: 43, side: 'left' },
   { key: 'hips', x: 42, y: 47, side: 'left' },
   { key: 'rThigh', x: 33, y: 62, side: 'left' },
   { key: 'rCalf', x: 38, y: 80, side: 'left' },
-  { key: 'lShoulder', x: 74, y: 18, side: 'right' },
   { key: 'chest', x: 62, y: 23, side: 'right' },
   { key: 'lArm', x: 79, y: 27, side: 'right' },
   { key: 'lForearm', x: 86, y: 43, side: 'right' },
@@ -29,15 +26,12 @@ const FEMALE_SPOTS: Spot[] = [
 ];
 
 const MALE_SPOTS: Spot[] = [
-  { key: 'neck', x: 50, y: 20, side: 'left' },
-  { key: 'rShoulder', x: 32, y: 26, side: 'left' },
   { key: 'rArm', x: 26, y: 36, side: 'left' },
   { key: 'waist', x: 49, y: 39, side: 'left' },
   { key: 'rForearm', x: 22, y: 45, side: 'left' },
   { key: 'hips', x: 47, y: 49, side: 'left' },
   { key: 'rThigh', x: 39, y: 62, side: 'left' },
   { key: 'rCalf', x: 38, y: 77, side: 'left' },
-  { key: 'lShoulder', x: 68, y: 26, side: 'right' },
   { key: 'chest', x: 58, y: 29, side: 'right' },
   { key: 'lArm', x: 74, y: 36, side: 'right' },
   { key: 'lForearm', x: 79, y: 45, side: 'right' },
