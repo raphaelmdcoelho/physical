@@ -12,8 +12,6 @@ interface Props {
 
 // Head to toe; paired rows put the right side on the viewer's left, like the figure.
 const MEASURE_ROWS: MeasureKey[][] = [
-  ['neck'],
-  ['rShoulder', 'lShoulder'],
   ['chest'],
   ['rArm', 'lArm'],
   ['waist'],
